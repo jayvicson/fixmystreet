@@ -567,8 +567,8 @@ $.extend(fixmystreet.utils, {
                     f.geometry = new_geometry;
                     this.removeAllFeatures();
                     this.addFeatures([f]);
-                    var qs = fixmystreet.utils.parse_query_string();
-                    if (!qs.bbox) {
+                    var qs = OpenLayers.Util.getParameters(fixmystreet.original.href);
+                    if (!qs.bbox && !qs.lat && !qs.lon) {
                         zoomToBounds(extent);
                     }
                 } else {
@@ -679,6 +679,12 @@ $.extend(fixmystreet.utils, {
         fixmystreet.markers.events.register( 'loadend', fixmystreet.markers, function(evt) {
             if (fixmystreet.map.popups.length) {
                 fixmystreet.map.removePopup(fixmystreet.map.popups[0]);
+            }
+
+            // Ensures the permalink control is updated when the filters change
+            var permalink_controls = fixmystreet.map.getControlsByClass(/Permalink/);
+            if (permalink_controls.length) {
+                permalink_controls[0].updateLink();
             }
         });
         fixmystreet.markers.events.register( 'loadstart', null, fixmystreet.maps.loading_spinner.show);
@@ -913,6 +919,10 @@ OpenLayers.Control.PanZoomFMS = OpenLayers.Class(OpenLayers.Control.PanZoom, {
 /* Overriding Permalink so that it can pass the correct zoom to OSM */
 OpenLayers.Control.PermalinkFMS = OpenLayers.Class(OpenLayers.Control.Permalink, {
     _updateLink: function(alter_zoom) {
+        // this.base was originally set in initialize(), but the window's href
+        //may have changed since then if e.g. the map filters have been updated.
+        this.base = window.location.href;
+
         var separator = this.anchor ? '#' : '?';
         var href = this.base;
         if (href.indexOf(separator) != -1) {
@@ -937,15 +947,27 @@ OpenLayers.Control.PermalinkFMS = OpenLayers.Class(OpenLayers.Control.Permalink,
         else {
             this.element.href = href;
         }
+
+        if ('replaceState' in history) {
+            if (fixmystreet.page.match(/around|reports/)) {
+                history.replaceState(
+                    history.state,
+                    null,
+                    href
+                );
+            }
+        }
     },
     updateLink: function() {
         this._updateLink(0);
-    }
+    },
+    CLASS_NAME: "OpenLayers.Control.PermalinkFMS"
 });
 OpenLayers.Control.PermalinkFMSz = OpenLayers.Class(OpenLayers.Control.PermalinkFMS, {
     updateLink: function() {
         this._updateLink(1);
-    }
+    },
+    CLASS_NAME: "OpenLayers.Control.PermalinkFMSz"
 });
 
 OpenLayers.Strategy.FixMyStreet = OpenLayers.Class(OpenLayers.Strategy.BBOX, {
