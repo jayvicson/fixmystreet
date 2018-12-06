@@ -105,6 +105,36 @@ fixmystreet.assets.add($.extend(true, {}, defaults, {
     }
 }));
 
+fixmystreet.assets.add($.extend(true, {}, defaults, {
+    http_options: {
+        params: {
+            TYPENAME: "Crossings"
+        }
+    },
+    attributes: {
+        central_asset_id: 'central_as',
+    },
+    asset_category: [
+          'Traffic lights & crossings problems with buttons, beep or lamps',
+          'Traffic lights & crossings problems with timings',
+        ],
+    asset_item: 'crossing'
+}));
+
+fixmystreet.assets.add($.extend(true, {}, defaults, {
+    http_options: {
+        params: {
+            TYPENAME: "Gullies"
+        }
+    },
+    attributes: {
+        central_asset_id: 'central_as',
+    },
+    asset_category: [
+        'Blocked drain'
+        ],
+    asset_item: 'drain'
+}));
 
 // The "whole street asset" layer indicates who is responsible for maintaining
 // a road via the 'feature_ty' attribute on features.
