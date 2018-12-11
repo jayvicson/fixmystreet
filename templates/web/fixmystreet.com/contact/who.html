@@ -1,4 +1,3 @@
-[% IF NOT problem %]
 <h4>Topic:</h4>
 
 [% IF field_errors.dest %]
@@ -50,6 +49,20 @@
     [% END %]
 [% END %]
 
+[% IF problem %]
+<div class="checkbox-group">
+    <input name="dest" id="dest_rules" type="radio" value="rules" class="required"[% IF dest AND dest == 'rules' %] checked[% END %]>
+    <label class="inline" for="dest_rules">This [% update ? 'update' : 'report' %] breaks the <a href="/about/house-rules">House Rules</a></label>
+</div>
+<div class="checkbox-group">
+    <input name="dest" id="dest_update" type="radio" value="update" class="required"[% IF dest AND dest == 'update' %] checked[% END %]>
+    <label class="inline" for="dest_update">This report has not been fixed</label>
+</div>
+<div class="checkbox-group">
+    <input name="dest" id="dest_council" type="radio" value="council" class="required"[% IF dest AND dest == 'council' %] checked[% END %]>
+    <label class="inline" for="dest_council">I want to make a new report about a street problem</label>
+</div>
+[% ELSE %]
 <div class="checkbox-group">
     <input name="dest" id="dest_help" type="radio" value="help" class="required"[% IF dest AND dest == 'help' %] checked[% END %]>
     <label class="inline" for="dest_help">I need help using the site</label>
