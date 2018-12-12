@@ -68,7 +68,7 @@ var streetlight_stylemap = new OpenLayers.StyleMap({
         popupYOffset: -40,
         graphicOpacity: 1.0,
 
-        label: "${Feature_id}",
+        label: "${feature_id}",
         labelOutlineColor: "white",
         labelOutlineWidth: 3,
         labelYOffset: 65,
