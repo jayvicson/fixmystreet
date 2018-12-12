@@ -130,6 +130,26 @@ fixmystreet.assets.add($.extend(true, {}, labeled_defaults, {
 fixmystreet.assets.add($.extend(true, {}, labeled_defaults, {
     http_options: {
         params: {
+            TYPENAME: "IlluminatedBollards"
+        }
+    },
+    asset_category: ["Bollard light not working"],
+    asset_item: 'bollard'
+}));
+
+fixmystreet.assets.add($.extend(true, {}, labeled_defaults, {
+    http_options: {
+        params: {
+            TYPENAME: "Bollards"
+        }
+    },
+    asset_category: ["Bollards or railings"],
+    asset_item: 'bollard'
+}));
+
+fixmystreet.assets.add($.extend(true, {}, labeled_defaults, {
+    http_options: {
+        params: {
             TYPENAME: "Crossings"
         }
     },
@@ -141,6 +161,22 @@ fixmystreet.assets.add($.extend(true, {}, labeled_defaults, {
           'Traffic lights & crossings problems with timings',
         ],
     asset_item: 'crossing'
+}));
+
+fixmystreet.assets.add($.extend(true, {}, labeled_defaults, {
+    http_options: {
+        params: {
+            TYPENAME: "Signs_Union"
+        }
+    },
+    attributes: {
+        central_asset_id: 'central_as',
+    },
+    asset_category: [
+          'Sign light not working',
+          'Sign problem',
+        ],
+    asset_item: 'sign'
 }));
 
 fixmystreet.assets.add($.extend(true, {}, defaults, {
