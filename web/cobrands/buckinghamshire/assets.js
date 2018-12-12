@@ -6,7 +6,7 @@ if (!fixmystreet.maps) {
 
 var defaults = {
     http_options: {
-        url: "https://tilma.mysociety.org/mapserver/bucks",
+        url: "https://struan.tilma.dev.mysociety.org/mapserver/bucks",
         params: {
             SERVICE: "WFS",
             VERSION: "1.1.0",
