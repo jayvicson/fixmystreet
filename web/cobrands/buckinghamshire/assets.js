@@ -6,7 +6,7 @@ if (!fixmystreet.maps) {
 
 var defaults = {
     http_options: {
-        url: "https://tilma.mysociety.org/mapserver/bucks",
+        url: "https://struan.tilma.dev.mysociety.org/mapserver/bucks",
         params: {
             SERVICE: "WFS",
             VERSION: "1.1.0",
@@ -68,7 +68,7 @@ var streetlight_stylemap = new OpenLayers.StyleMap({
         popupYOffset: -40,
         graphicOpacity: 1.0,
 
-        label: "${Feature_id}",
+        label: "${feature_id}",
         labelOutlineColor: "white",
         labelOutlineWidth: 3,
         labelYOffset: 65,
@@ -77,35 +77,77 @@ var streetlight_stylemap = new OpenLayers.StyleMap({
     })
 });
 
-fixmystreet.assets.add($.extend(true, {}, defaults, {
+var streetlight_code_to_type = {
+  'LC': 'street light',
+  'S': 'sign',
+  'BB': 'belisha beacon',
+  'B': 'bollard',
+  'BS': 'traffic signal',
+  'VMS': 'sign',
+  'RB': 'bollard',
+  'CPS': 'sign',
+  'SF': 'sign'
+};
+
+var labeled_defaults = $.extend(true, {}, defaults, {
     select_action: true,
     stylemap: streetlight_stylemap,
-    http_options: {
-        params: {
-            TYPENAME: "StreetLights_Merged"
-        }
-    },
     attributes: {
         central_asset_id: 'central_as',
-        site_code: 'Site_code'
+        site_code: 'site_code'
+    },
+    actions: {
+        asset_found: function(asset, config) {
+          var id = asset.attributes.feature_id || '';
+          if (id !== '') {
+              var code = id.replace(/[0-9]/g, '');
+              var asset_name = streetlight_code_to_type[code] || config.asset_item;
+              $('.category_meta_message').html('You have selected ' + asset_name + ' <b>' + id + '</b>');
+          } else {
+              $('.category_meta_message').html('You can pick a <b class="asset-spot">' + config.asset_item + '</b> from the map &raquo;');
+          }
+        },
+        asset_not_found: function(config) {
+           $('.category_meta_message').html('You can pick a <b class="asset-spot">' + config.asset_item + '</b> from the map &raquo;');
+        }
+    }
+});
+
+fixmystreet.assets.add($.extend(true, {}, labeled_defaults, {
+    http_options: {
+        params: {
+            TYPENAME: "StreetLights_Union"
+        }
     },
     asset_category: [
         'Light on during the day',
         'Street light dim',
         'Street light intermittent',
         'Street light not working' ],
-    asset_item: 'street light',
-    actions: {
-        asset_found: function(asset) {
-          $('.category_meta_message').html('You have selected street light <b>' + asset.attributes.Feature_id + '</b>');
-        },
-        asset_not_found: function() {
-           $('.category_meta_message').html('You can pick a <b class="asset-spot">street light</b> from the map &raquo;');
-        }
-    }
+    asset_item: 'street light'
 }));
 
-fixmystreet.assets.add($.extend(true, {}, defaults, {
+fixmystreet.assets.add($.extend(true, {}, labeled_defaults, {
+    http_options: {
+        params: {
+            TYPENAME: "IlluminatedBollards"
+        }
+    },
+    asset_category: ["Bollard light not working"],
+    asset_item: 'bollard'
+}));
+
+fixmystreet.assets.add($.extend(true, {}, labeled_defaults, {
+    http_options: {
+        params: {
+            TYPENAME: "Bollards"
+        }
+    },
+    asset_category: ["Bollards or railings"],
+    asset_item: 'bollard'
+}));
+
+fixmystreet.assets.add($.extend(true, {}, labeled_defaults, {
     http_options: {
         params: {
             TYPENAME: "Crossings"
@@ -119,6 +161,22 @@ fixmystreet.assets.add($.extend(true, {}, defaults, {
           'Traffic lights & crossings problems with timings',
         ],
     asset_item: 'crossing'
+}));
+
+fixmystreet.assets.add($.extend(true, {}, labeled_defaults, {
+    http_options: {
+        params: {
+            TYPENAME: "Signs_Union"
+        }
+    },
+    attributes: {
+        central_asset_id: 'central_as',
+    },
+    asset_category: [
+          'Sign light not working',
+          'Sign problem',
+        ],
+    asset_item: 'sign'
 }));
 
 fixmystreet.assets.add($.extend(true, {}, defaults, {
