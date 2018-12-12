@@ -78,7 +78,22 @@ var lighting_options = $.extend({}, common_options, {
 fixmystreet.assets.add($.extend({}, lighting_options, {
     asset_category: "Street Light",
     asset_item: 'street light',
-    filter_value: 'SL: Street Light'
+    filter_value: [
+        'SL: Street Light',
+        'SL: Silver Spring CMS',
+        'SL: Philips CMS',
+        'SL: Feature Fld.Lgt',
+        'SL: Gas Light',
+        'SL: High Mast',
+        'SL: Refuge Column',
+        'SL: Subway'
+    ]
+}));
+
+fixmystreet.assets.add($.extend({}, lighting_options, {
+    asset_category: "Zebra Crossing Light",
+    asset_item: 'light',
+    filter_value: 'SL: Zebra'
 }));
 
 fixmystreet.assets.add($.extend({}, lighting_options, {
