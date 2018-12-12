@@ -1,0 +1,42 @@
+[% IF problem %]
+<h4>Topic:</h4>
+
+[% IF field_errors.dest %]
+<div class="form-error">[% field_errors.dest %]</div>
+[% ELSIF field_errors.not_for_us %]
+    <div class="form-error">You can only use this form to report inappropriate content</div>
+    [% IF dest == 'council' %]
+    <p>
+    <strong>If you want to report a street problem</strong>, return to the
+    homepage and enter your postcode. You can then make a report.
+    We'll send it to your council, and publish it on the site.
+    </p>
+    <p>
+    <strong>If your problem is not a street issue</strong>, or is <strong>not
+    suitable for publication on the site</strong>, then this isn't the
+    right place for it. You should find other contact details on the council's
+    website.
+    </p>
+    [% ELSIF dest == 'update' %]
+    <p>
+    <strong>If you'd like to update a report</strong>, please leave an update
+    on the report’s page, underneath the report details.
+    </p>
+    [% END %]
+[% END %]
+
+<div class="checkbox-group">
+    <input name="dest" id="dest_rules" type="radio" value="rules" class="required"[% IF dest AND dest == 'rules' %] checked[% END %]>
+    <label class="inline" for="dest_rules">This [% update ? 'update' : 'report' %] is abusive, contains personal information, or similar</label>
+</div>
+
+<div class="checkbox-group">
+    <input name="dest" id="dest_update" type="radio" value="update" class="required"[% IF dest AND dest == 'update' %] checked[% END %]>
+    <label class="inline" for="dest_update">This report has not been fixed</label>
+</div>
+
+<div class="checkbox-group">
+    <input name="dest" id="dest_council" type="radio" value="council" class="required"[% IF dest AND dest == 'council' %] checked[% END %]>
+    <label class="inline" for="dest_council">I want to make a new report about a street problem</label>
+</div>
+[% END %]
