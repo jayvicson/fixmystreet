@@ -116,7 +116,7 @@ var labeled_defaults = $.extend(true, {}, defaults, {
 fixmystreet.assets.add($.extend(true, {}, labeled_defaults, {
     http_options: {
         params: {
-            TYPENAME: "StreetLights_Merged"
+            TYPENAME: "StreetLights_Union"
         }
     },
     asset_category: [
