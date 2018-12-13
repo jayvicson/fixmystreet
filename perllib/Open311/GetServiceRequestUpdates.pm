@@ -195,6 +195,8 @@ sub update_comments {
                     }
                 }
             }
+        } elsif (FixMyStreet->config('STAGING_SITE')) {
+            warn "Failed to match comment to problem with external_id $request_id for " . $body->name . "\n";
         }
     }
 
