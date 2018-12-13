@@ -365,7 +365,7 @@ $.extend(fixmystreet.utils, {
     /* Make sure pins aren't going to reload just because we're zooming out,
      * we already have the pins when the page loaded */
     function zoomToBounds(bounds) {
-        if (!bounds) { return; }
+        if (!bounds || !fixmystreet.markers.strategies) { return; }
         var strategy = fixmystreet.markers.strategies[0];
         strategy.deactivate();
         var center = bounds.getCenterLonLat();
@@ -935,7 +935,21 @@ OpenLayers.Control.PermalinkFMS = OpenLayers.Class(OpenLayers.Control.Permalink,
         if ( alter_zoom ) {
             zoom += fixmystreet.zoomOffset;
         }
-        href += separator + OpenLayers.Util.getParameterString(this.createParams(center, zoom));
+
+        var params = this.createParams(center, zoom);
+        // Roundtripping a param containing urlencoded commas through
+        // createParams and getParameterString results in the commas
+        // becoming un-urlencoded, so let's avoid this by joining the arrays
+        // with commas here, which will then be urlencoded correctly by
+        // getParameterString.
+        if (OpenLayers.Util.isArray(params.status)) {
+            params.status = params.status.join(",");
+        }
+        if (OpenLayers.Util.isArray(params.filter_category)) {
+            params.filter_category = params.filter_category.join(",");
+        }
+
+        href += separator + OpenLayers.Util.getParameterString(params);
         // Could use mlat/mlon here as well if we are on a page with a marker
         if (this.base == '/around') {
             href += '&js=1';
