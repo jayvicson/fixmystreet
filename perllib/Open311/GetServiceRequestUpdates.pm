@@ -195,6 +195,8 @@ sub update_comments {
                     }
                 }
             }
+        } elsif (FixMyStreet->config('STAGING_SITE')) {
+            warn "Failed to match comment $request_id to problem for " . $body->name . "\n";
         }
     }
 
