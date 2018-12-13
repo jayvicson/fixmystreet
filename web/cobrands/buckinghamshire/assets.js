@@ -174,6 +174,7 @@ fixmystreet.assets.add($.extend(true, {}, labeled_defaults, {
     },
     feature_code: 'asset_no',
     asset_category: [
+          'Belisha Beacon broken',
           'Traffic lights & crossings problems with buttons, beep or lamps',
           'Traffic lights & crossings problems with timings',
         ],
