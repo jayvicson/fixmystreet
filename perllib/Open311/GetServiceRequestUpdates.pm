@@ -195,7 +195,9 @@ sub update_comments {
                     }
                 }
             }
-        } elsif (FixMyStreet->config('STAGING_SITE')) {
+        # we get lots of comments that are not related to FMS issues from Lewisham so ignore those otherwise
+        # way too many warnings.
+        } elsif (FixMyStreet->config('STAGING_SITE') and $body->name !~ /Lewisham/) {
             warn "Failed to match comment to problem with external_id $request_id for " . $body->name . "\n";
         }
     }
