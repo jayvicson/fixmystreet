@@ -109,6 +109,15 @@ sub open311_config_updates {
     $params->{mark_reopen} = 1;
 }
 
+sub filter_report_description {
+    my ($self, $description) = @_;
+
+    $description =~ s/\b[\w]+\@[\w]+\.[^ ]+\b//gms;
+    $description =~ s/\b0[\d]{3}\s?\d\s?[\d]{2}\s?[\d]{4}\b//gms;
+
+    return $description;
+}
+
 sub map_type { 'Buckinghamshire' }
 
 sub default_map_zoom { 3 }

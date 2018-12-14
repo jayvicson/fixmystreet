@@ -82,4 +82,50 @@ subtest 'flytipping off road sent to extra email' => sub {
 
 };
 
+$cobrand = FixMyStreet::Cobrand::Buckinghamshire->new();
+
+for my $test (
+    {
+        desc => 'filters basic emails',
+        in => 'email: test@example.com',
+        out => 'email: ',
+    },
+    {
+        desc => 'filters emails in brackets',
+        in => 'email: <test@example.com>',
+        out => 'email: <>',
+    },
+    {
+        desc => 'filters emails from hosts',
+        in => 'email: test@mail.example.com',
+        out => 'email: ',
+    },
+    {
+        desc => 'filters multiple emails',
+        in => 'email: test@example.com and user@fixmystreet.com',
+        out => 'email:  and ',
+    },
+    {
+        desc => 'filters basic phone numbers',
+        in => 'number: 07700 900000',
+        out => 'number: ',
+    },
+    {
+        desc => 'filters multiple phone numbers',
+        in => 'number: 07700 900000 and 07700 900001',
+        out => 'number:  and ',
+    },
+    {
+        desc => 'filters 3 part phone numbers',
+        in => 'number: 0114 496 0999',
+        out => 'number: ',
+    },
+) {
+    subtest $test->{desc} => sub {
+        is $cobrand->filter_report_description($test->{in}), $test->{out}, "filtered correctly";
+    };
+}
+
+
+
 done_testing();
